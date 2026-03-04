@@ -1,5 +1,5 @@
 <?php
-include '../config/db.php';
+include '../config/db_connect.php';
 
 if(isset($_POST['register'])){
 
