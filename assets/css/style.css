@@ -1,14 +1,73 @@
-body {
-    font-family: Arial;
-    margin: 40px;
-    background-color: #f4f4f4;
+/* Reset */
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
 }
 
-h1 {
-    color: #2c3e50;
+/* Page Background */
+body{
+    font-family: Arial, Helvetica, sans-serif;
+    background: linear-gradient(135deg,#4facfe,#00f2fe);
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
 }
 
-a {
-    text-decoration: none;
-    color: blue;
+/* Main Card Container */
+.container{
+    background:white;
+    padding:40px;
+    border-radius:10px;
+    box-shadow:0px 10px 25px rgba(0,0,0,0.2);
+    width:400px;
+    text-align:center;
+}
+
+/* Headings */
+h1,h2{
+    margin-bottom:20px;
+}
+
+/* Inputs */
+input{
+    width:90%;
+    padding:10px;
+    margin-top:5px;
+    border-radius:5px;
+    border:1px solid #ccc;
+}
+
+/* Buttons */
+button{
+    background:#4facfe;
+    color:white;
+    border:none;
+    padding:10px 20px;
+    border-radius:5px;
+    cursor:pointer;
+}
+
+button:hover{
+    background:#2f80ed;
+}
+
+/* Links */
+a{
+    text-decoration:none;
+    color:#2f80ed;
+}
+
+a:hover{
+    text-decoration:underline;
+}
+
+/* Dashboard Menu */
+ul{
+    list-style:none;
+}
+
+ul li{
+    margin:10px 0;
 }

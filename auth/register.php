@@ -7,13 +7,23 @@ $name = $_POST['name'];
 $email = $_POST['email'];
 $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
 
+// check if email already exists
+$check = "SELECT * FROM users WHERE email='$email'";
+$result = $conn->query($check);
+
+if($result->num_rows > 0){
+$error = "Email already registered";
+}else{
+
 $sql = "INSERT INTO users(name,email,password) VALUES('$name','$email','$password')";
 
 if($conn->query($sql)){
-    echo "Registration successful";
-    header("Location: login.php");
+header("Location: login.php");
+exit();
 }else{
-    echo "Error: " . $conn->error;
+$error = "Registration failed";
+}
+
 }
 
 }
@@ -23,23 +33,32 @@ if($conn->query($sql)){
 <html>
 <head>
 <title>Register</title>
+<link rel="stylesheet" href="../assets/css/style.css">
 </head>
 
 <body>
 
-<h2>Register</h2>
+<div class="container">
+
+<h2>Create Account</h2>
+
+<?php
+if(isset($error)){
+echo "<p style='color:red;'>$error</p>";
+}
+?>
 
 <form method="POST">
 
-Name <br>
+Name<br>
 <input type="text" name="name" required>
 <br><br>
 
-Email <br>
+Email<br>
 <input type="email" name="email" required>
 <br><br>
 
-Password <br>
+Password<br>
 <input type="password" name="password" required>
 <br><br>
 
@@ -47,7 +66,11 @@ Password <br>
 
 </form>
 
-<a href="login.php">Already have an account? Login</a>
+<br>
+
+<a href="login.php">Back to Login</a>
+
+</div>
 
 </body>
 </html>

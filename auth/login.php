@@ -10,23 +10,24 @@ $password = $_POST['password'];
 $sql = "SELECT * FROM users WHERE email='$email'";
 $result = $conn->query($sql);
 
-if($result->num_rows > 0){
+if($result && $result->num_rows > 0){
 
 $user = $result->fetch_assoc();
 
 if(password_verify($password,$user['password'])){
 
-$_SESSION['user_id'] = $user['id'];
+$_SESSION['user_id'] = $user['user_id'];
 $_SESSION['user_name'] = $user['name'];
 
 header("Location: ../dashboard/dashboard.php");
+exit();
 
 }else{
-echo "Wrong password";
+$error = "Wrong password";
 }
 
 }else{
-echo "User not found";
+$error = "User not found";
 }
 
 }
@@ -36,19 +37,28 @@ echo "User not found";
 <html>
 <head>
 <title>Login</title>
+<link rel="stylesheet" href="../assets/css/style.css">
 </head>
 
 <body>
 
+<div class="container">
+
 <h2>Login</h2>
+
+<?php
+if(isset($error)){
+echo "<p style='color:red;'>$error</p>";
+}
+?>
 
 <form method="POST">
 
-Email <br>
+Email<br>
 <input type="email" name="email" required>
 <br><br>
 
-Password <br>
+Password<br>
 <input type="password" name="password" required>
 <br><br>
 
@@ -56,7 +66,11 @@ Password <br>
 
 </form>
 
+<br>
+
 <a href="register.php">Create account</a>
+
+</div>
 
 </body>
 </html>
