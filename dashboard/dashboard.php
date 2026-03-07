@@ -1,40 +1,15 @@
 <?php
 include '../auth/auth_check.php';
+include '../includes/header.php';
 ?>
 
-<!DOCTYPE html>
-<html>
-<head>
-<title>Dashboard</title>
-<link rel="stylesheet" href="../assets/css/style.css">
-</head>
+<?php include '../includes/sidebar.php'; ?>
 
-<body>
-
-<div class="dashboard-layout">
-
-<!-- Sidebar -->
-<div class="sidebar">
-
-<h2>Finance App</h2>
-
-<a href="../dashboard/dashboard.php">Dashboard</a>
-<a href="../accounts/view_accounts.php">Accounts</a>
-<a href="../categories/view_categories.php">Categories</a>
-<a href="../transactions/view_transactions.php">Transactions</a>
-<a href="../reports/monthly_report.php">Reports</a>
-<a href="../auth/logout.php">Logout</a>
-
-</div>
-
-<!-- Main Content -->
 <div class="main-content">
 
 <h1>Smart Personal Finance & Tax Management System</h1>
 
-<p class="welcome">
-Welcome <?php echo $_SESSION['user_name']; ?>
-</p>
+<p>Welcome <?php echo $_SESSION['user_name']; ?></p>
 
 <div class="cards">
 
@@ -45,7 +20,7 @@ Welcome <?php echo $_SESSION['user_name']; ?>
 
 <div class="card">
 <h3>Transactions</h3>
-<p>Track income and expenses</p>
+<p>Track your income and expenses</p>
 </div>
 
 <div class="card">
@@ -57,7 +32,4 @@ Welcome <?php echo $_SESSION['user_name']; ?>
 
 </div>
 
-</div>
-
-</body>
-</html>
+<?php include '../includes/footer.php'; ?>

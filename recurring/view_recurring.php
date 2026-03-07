@@ -1,39 +1,54 @@
 <?php
+include '../auth/auth_check.php';
 include '../config/db_connect.php';
 
-$sql = "SELECT r.*, c.category_name
-        FROM recurring_payments r
-        JOIN categories c ON r.category_id = c.category_id";
-
-$result = $conn->query($sql);
+$result = $conn->query("SELECT * FROM recurring_payments");
 ?>
 
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Recurring Payments</title>
-    <link rel="stylesheet" href="../assets/css/style.css">
+<title>Recurring Payments</title>
+<link rel="stylesheet" href="../assets/css/style.css">
 </head>
-<body>
-<a href="../index.php">Dashboard</a>
-<h2>Recurring Payments</h2>
 
-<a href="../index.php">Dashboard</a> |
-<a href="add_recurring.php">Add Recurring</a>
+<body>
+
+<div class="dashboard-layout">
+
+<?php include '../includes/sidebar.php'; ?>
+
+<div class="main-content">
+
+<h1>Recurring Payments</h1>
+
+<a href="add_recurring.php">Add Recurring Payment</a>
 
 <br><br>
 
 <?php
 while($row = $result->fetch_assoc()){
-    echo "Category: " . $row['category_name'] .
-         " | Amount: ₹" . $row['amount'] .
-         " | Frequency: " . $row['frequency'] .
-         " | Next Date: " . $row['next_date'];
+?>
 
-    echo "<br><br>";
+<div class="card">
+
+<p>
+<strong>ID:</strong> <?php echo $row['recurring_id']; ?> |
+<strong>Description:</strong> <?php echo $row['description']; ?> |
+<strong>Amount:</strong> ₹<?php echo $row['amount']; ?>
+</p>
+
+</div>
+
+<br>
+
+<?php
 }
 ?>
 
-<script src="../assets/js/script.js"></script>
+</div>
+
+</div>
+
 </body>
 </html>

@@ -1,44 +1,57 @@
 <?php
+include '../auth/auth_check.php';
 include '../config/db_connect.php';
 
-$sql = "SELECT t.*, a.account_name, c.category_name
-        FROM transactions t
-        JOIN accounts a ON t.account_id = a.account_id
-        JOIN categories c ON t.category_id = c.category_id";
-
-$result = $conn->query($sql);
+$result = $conn->query("SELECT * FROM transactions ORDER BY transaction_date DESC");
 ?>
 
 <!DOCTYPE html>
 <html>
 <head>
-    <title>View Transactions</title>
-    <link rel="stylesheet" href="../assets/css/style.css">
+<title>Transactions</title>
+<link rel="stylesheet" href="../assets/css/style.css">
 </head>
-<body>
-<a href="../index.php">Dashboard</a>
-<h2>Transactions</h2>
 
-<a href="../index.php">Dashboard</a> |
+<body>
+
+<div class="dashboard-layout">
+
+<?php include '../includes/sidebar.php'; ?>
+
+<div class="main-content">
+
+<h1>Transactions</h1>
+
 <a href="add_transaction.php">Add Transaction</a>
 
 <br><br>
 
 <?php
 while($row = $result->fetch_assoc()){
-    echo $row['account_name'] . " | " .
-         $row['category_name'] . " | ₹" .
-         $row['amount'] . " | " .
-         $row['transaction_type'] . " | " .
-         $row['date'];
+?>
 
-    echo " | <a href='delete_transaction.php?id=" . $row['transaction_id'] . "' 
-            onclick='return confirmDelete()'>Delete</a>";
+<div class="card">
 
-    echo "<br><br>";
+<p>
+<strong>ID:</strong> <?php echo $row['transaction_id']; ?> |
+<strong>Account:</strong> <?php echo $row['account_id']; ?> |
+<strong>Category:</strong> <?php echo $row['category_id']; ?> |
+<strong>Amount:</strong> ₹<?php echo $row['amount']; ?> |
+<strong>Type:</strong> <?php echo $row['transaction_type']; ?> |
+<strong>Date:</strong> <?php echo $row['transaction_date']; ?>
+</p>
+
+</div>
+
+<br>
+
+<?php
 }
 ?>
 
-<script src="../assets/js/script.js"></script>
+</div>
+
+</div>
+
 </body>
 </html>

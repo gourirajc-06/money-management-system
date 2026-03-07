@@ -1,36 +1,53 @@
 <?php
+include '../auth/auth_check.php';
 include '../config/db_connect.php';
+
 $result = $conn->query("SELECT * FROM categories");
 ?>
 
 <!DOCTYPE html>
 <html>
 <head>
-    <title>View Categories</title>
-    <link rel="stylesheet" href="../assets/css/style.css">
+<title>Categories</title>
+<link rel="stylesheet" href="../assets/css/style.css">
 </head>
-<body>
-<a href="../index.php">Dashboard</a>
-<h2>Categories</h2>
 
-<a href="../index.php">Dashboard</a> |
+<body>
+
+<div class="dashboard-layout">
+
+<?php include '../includes/sidebar.php'; ?>
+
+<div class="main-content">
+
+<h1>Categories</h1>
+
 <a href="add_category.php">Add Category</a>
 
 <br><br>
 
 <?php
 while($row = $result->fetch_assoc()){
-    echo "ID: " . $row['category_id'] .
-         " | Name: " . $row['category_name'] .
-         " | Type: " . $row['type'];
+?>
 
-    echo " | <a href='delete_category.php?id=" . $row['category_id'] . "' 
-            onclick='return confirmDelete()'>Delete</a>";
+<div class="card">
 
-    echo "<br><br>";
+<p>
+<strong>ID:</strong> <?php echo $row['category_id']; ?> |
+<strong>Name:</strong> <?php echo $row['category_name']; ?>
+</p>
+
+</div>
+
+<br>
+
+<?php
 }
 ?>
 
-<script src="../assets/js/script.js"></script>
+</div>
+
+</div>
+
 </body>
 </html>

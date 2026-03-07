@@ -1,4 +1,5 @@
 <?php
+include '../auth/auth_check.php';
 include '../config/db_connect.php';
 
 $sql = "SELECT MONTH(transaction_date) as month, SUM(amount) as total
@@ -17,9 +18,13 @@ $result = $conn->query($sql);
 
 <body>
 
-<div class="container">
+<div class="dashboard-layout">
 
-<h2>Monthly Report</h2>
+<?php include '../includes/sidebar.php'; ?>
+
+<div class="main-content">
+
+<h1>Monthly Report</h1>
 
 <table border="1" cellpadding="10">
 
@@ -32,12 +37,14 @@ $result = $conn->query($sql);
 while($row = $result->fetch_assoc()){
 echo "<tr>";
 echo "<td>".$row['month']."</td>";
-echo "<td>".$row['total']."</td>";
+echo "<td>₹".$row['total']."</td>";
 echo "</tr>";
 }
 ?>
 
 </table>
+
+</div>
 
 </div>
 
