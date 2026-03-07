@@ -1,5 +1,7 @@
 <?php
+include '../auth/auth_check.php';
 include '../config/db_connect.php';
+include '../includes/header.php';
 
 $message = "";
 
@@ -18,31 +20,31 @@ if(isset($_POST['submit'])){
 }
 ?>
 
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Add Category</title>
-    <link rel="stylesheet" href="../assets/css/style.css">
-</head>
-<body>
-<a href="../index.php">Dashboard</a>
-<h2>Add Category</h2>
+<?php include '../includes/sidebar.php'; ?>
+
+<div class="main-content">
+
+<h1>Add Category</h1>
 
 <p><?php echo $message; ?></p>
 
 <form method="POST" onsubmit="return validateForm(this)">
-    Category Name:
-    <input type="text" name="category_name" required><br><br>
 
-    Type:
-    <select name="type">
-        <option>Income</option>
-        <option>Expense</option>
-    </select><br><br>
+<label>Category Name:</label><br>
+<input type="text" name="category_name" required><br><br>
 
-    <button type="submit" name="submit">Add Category</button>
+<label>Type:</label><br>
+<select name="type">
+<option value="Income">Income</option>
+<option value="Expense">Expense</option>
+</select>
+
+<br><br>
+
+<button type="submit" name="submit">Add Category</button>
+
 </form>
 
-<script src="../assets/js/script.js"></script>
-</body>
-</html>
+</div>
+
+<?php include '../includes/footer.php'; ?>

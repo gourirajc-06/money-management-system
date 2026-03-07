@@ -1,20 +1,8 @@
 <?php
 include '../auth/auth_check.php';
 include '../config/db_connect.php';
-
-$result = $conn->query("SELECT * FROM categories");
+include '../includes/header.php';
 ?>
-
-<!DOCTYPE html>
-<html>
-<head>
-<title>Categories</title>
-<link rel="stylesheet" href="../assets/css/style.css">
-</head>
-
-<body>
-
-<div class="dashboard-layout">
 
 <?php include '../includes/sidebar.php'; ?>
 
@@ -27,27 +15,22 @@ $result = $conn->query("SELECT * FROM categories");
 <br><br>
 
 <?php
+$result = $conn->query("SELECT * FROM categories");
+
 while($row = $result->fetch_assoc()){
 ?>
 
 <div class="card">
 
-<p>
-<strong>ID:</strong> <?php echo $row['category_id']; ?> |
+<strong>ID:</strong> <?php echo $row['category_id']; ?><br>
 <strong>Name:</strong> <?php echo $row['category_name']; ?>
-</p>
 
 </div>
 
 <br>
 
-<?php
-}
-?>
+<?php } ?>
 
 </div>
 
-</div>
-
-</body>
-</html>
+<?php include '../includes/footer.php'; ?>
