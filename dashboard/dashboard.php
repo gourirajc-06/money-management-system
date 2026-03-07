@@ -11,19 +11,51 @@ include '../auth/auth_check.php';
 
 <body>
 
-<div class="container">
+<div class="dashboard-layout">
 
-<h1>Dashboard</h1>
+<!-- Sidebar -->
+<div class="sidebar">
 
-<p>Welcome <?php echo $_SESSION['user_name']; ?></p>
+<h2>Finance App</h2>
 
-<ul>
-<li><a href="../accounts/view_accounts.php">View Accounts</a></li>
-<li><a href="../categories/view_categories.php">View Categories</a></li>
-<li><a href="../transactions/view_transactions.php">View Transactions</a></li>
-<li><a href="../reports/monthly_report.php">Monthly Report</a></li>
-<li><a href="../auth/logout.php">Logout</a></li>
-</ul>
+<a href="../dashboard/dashboard.php">Dashboard</a>
+<a href="../accounts/view_accounts.php">Accounts</a>
+<a href="../categories/view_categories.php">Categories</a>
+<a href="../transactions/view_transactions.php">Transactions</a>
+<a href="../reports/monthly_report.php">Reports</a>
+<a href="../auth/logout.php">Logout</a>
+
+</div>
+
+<!-- Main Content -->
+<div class="main-content">
+
+<h1>Smart Personal Finance & Tax Management System</h1>
+
+<p class="welcome">
+Welcome <?php echo $_SESSION['user_name']; ?>
+</p>
+
+<div class="cards">
+
+<div class="card">
+<h3>Accounts</h3>
+<p>Manage your financial accounts</p>
+</div>
+
+<div class="card">
+<h3>Transactions</h3>
+<p>Track income and expenses</p>
+</div>
+
+<div class="card">
+<h3>Reports</h3>
+<p>View monthly financial reports</p>
+</div>
+
+</div>
+
+</div>
 
 </div>
 

@@ -3,6 +3,12 @@ include '../config/db_connect.php';
 
 $message = "";
 
+// fetch accounts
+$accounts = $conn->query("SELECT account_id, account_name FROM accounts");
+
+// fetch categories
+$categories = $conn->query("SELECT category_id, category_name FROM categories");
+
 if(isset($_POST['submit'])){
     $account_id = $_POST['account_id'];
     $category_id = $_POST['category_id'];
@@ -11,7 +17,7 @@ if(isset($_POST['submit'])){
     $date = $_POST['date'];
 
     $sql = "INSERT INTO transactions 
-            (account_id, category_id, amount, transaction_type, date)
+            (account_id, category_id, amount, transaction_type, transaction_date)
             VALUES ('$account_id','$category_id','$amount','$type','$date')";
 
     if($conn->query($sql)){
@@ -22,7 +28,7 @@ if(isset($_POST['submit'])){
             $conn->query("UPDATE accounts SET balance = balance - $amount WHERE account_id = $account_id");
         }
 
-        $message = " Transaction Added!";
+        $message = "Transaction Added Successfully!";
     } else {
         $message = "Error: " . $conn->error;
     }
@@ -32,41 +38,74 @@ if(isset($_POST['submit'])){
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Add Transaction</title>
-    <link rel="stylesheet" href="../assets/css/style.css">
+<title>Add Transaction</title>
+<link rel="stylesheet" href="../assets/css/style.css">
 </head>
+
 <body>
-<a href="../index.php">Dashboard</a>
+
+<div class="container">
+
+<a href="../index.php">← Dashboard</a>
+
 <h2>Add Transaction</h2>
 
 <p><?php echo $message; ?></p>
 
-<form method="POST" onsubmit="return validateForm(this)">
-    Account ID:
-    <input type="number" name="account_id" required><br><br>
+<form method="POST">
 
-    Category ID:
-    <input type="number" name="category_id" required><br><br>
+<!-- Account Dropdown -->
+Account:
+<select name="account_id" required>
+<option value="">Select Account</option>
 
-    Amount:
-    <input type="number" step="0.01" name="amount" required><br><br>
+<?php
+while($row = $accounts->fetch_assoc()){
+echo "<option value='".$row['account_id']."'>".$row['account_name']."</option>";
+}
+?>
 
-    Type:
-    <select name="transaction_type">
-        <option>Income</option>
-        <option>Expense</option>
-    </select><br><br>
+</select>
 
-    Date:
-    <input type="date" id="date" name="date" required><br><br>
+<br><br>
 
-    <button type="submit" name="submit">Add Transaction</button>
+<!-- Category Dropdown -->
+Category:
+<select name="category_id" required>
+<option value="">Select Category</option>
+
+<?php
+while($row = $categories->fetch_assoc()){
+echo "<option value='".$row['category_id']."'>".$row['category_name']."</option>";
+}
+?>
+
+</select>
+
+<br><br>
+
+Amount:
+<input type="number" step="0.01" name="amount" required>
+
+<br><br>
+
+Type:
+<select name="transaction_type">
+<option>Income</option>
+<option>Expense</option>
+</select>
+
+<br><br>
+
+Date:
+<input type="date" name="date" required>
+
+<br><br>
+
+<button type="submit" name="submit">Add Transaction</button>
+
 </form>
 
-<script>
-setTodayDate("date");
-</script>
-
-<script src="../assets/js/script.js"></script>
+</div>
 </body>
 </html>

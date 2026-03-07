@@ -6,32 +6,34 @@
 }
 
 /* Page Background */
+
 body{
     font-family: Arial, Helvetica, sans-serif;
     background: linear-gradient(135deg,#4facfe,#00f2fe);
     min-height:100vh;
-    display:flex;
-    justify-content:center;
-    align-items:center;
 }
 
-/* Main Card Container */
+/* Main Card Container (Login / Register Pages) */
+
 .container{
     background:white;
     padding:40px;
     border-radius:10px;
     box-shadow:0px 10px 25px rgba(0,0,0,0.2);
     width:400px;
+    margin:100px auto;
     text-align:center;
 }
 
 /* Headings */
+
 h1,h2{
     margin-bottom:20px;
 }
 
 /* Inputs */
-input{
+
+input, select{
     width:90%;
     padding:10px;
     margin-top:5px;
@@ -40,6 +42,7 @@ input{
 }
 
 /* Buttons */
+
 button{
     background:#4facfe;
     color:white;
@@ -54,6 +57,7 @@ button:hover{
 }
 
 /* Links */
+
 a{
     text-decoration:none;
     color:#2f80ed;
@@ -63,11 +67,63 @@ a:hover{
     text-decoration:underline;
 }
 
-/* Dashboard Menu */
-ul{
-    list-style:none;
+/* Dashboard Layout */
+
+.dashboard-layout{
+    display:flex;
+    min-height:100vh;
 }
 
-ul li{
+/* Sidebar */
+
+.sidebar{
+    width:220px;
+    background:#2f80ed;
+    color:white;
+    padding:20px;
+}
+
+.sidebar h2{
+    margin-bottom:30px;
+}
+
+.sidebar a{
+    display:block;
+    color:white;
+    text-decoration:none;
     margin:10px 0;
+    padding:5px;
+    border-radius:5px;
+}
+
+.sidebar a:hover{
+    background:rgba(255,255,255,0.2);
+}
+
+/* Main Content */
+
+.main-content{
+    flex:1;
+    padding:40px;
+}
+
+.welcome{
+    margin-bottom:30px;
+    font-size:18px;
+}
+
+/* Dashboard Cards */
+
+.cards{
+    display:flex;
+    gap:20px;
+    flex-wrap:wrap;
+}
+
+.card{
+    background:white;
+    padding:20px;
+    border-radius:10px;
+    box-shadow:0px 5px 15px rgba(0,0,0,0.1);
+    width:220px;
 }
