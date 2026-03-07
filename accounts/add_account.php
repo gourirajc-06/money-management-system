@@ -16,6 +16,7 @@ if(isset($_POST['submit'])){
 <html>
 <head>
     <title>Add Account</title>
+<link rel="stylesheet" href="../assets/css/style.css">
 </head>
 <body>
 <a href="../index.php">Dashboard</a>
