@@ -8,9 +8,13 @@
 /* Page Background */
 
 body{
-    font-family: Arial, Helvetica, sans-serif;
-    background: linear-gradient(135deg,#4facfe,#00f2fe);
-    min-height:100vh;
+background: linear-gradient(135deg,#3a7bd5,#00d2ff);
+min-height:100vh;
+font-family: Arial;
+}
+
+.card{
+border-radius:15px;
 }
 
 /* Main Card Container (Login / Register Pages) */
@@ -74,38 +78,32 @@ a:hover{
     min-height:100vh;
 }
 
-/* Sidebar */
-
 .sidebar{
-    width:220px;
-    background:#2f80ed;
-    color:white;
-    padding:20px;
-}
-
-.sidebar h2{
-    margin-bottom:30px;
+width:220px;
+height:100vh;
+position:fixed;
+left:0;
+top:0;
+background:#1f2d3d;
 }
 
 .sidebar a{
-    display:block;
-    color:white;
-    text-decoration:none;
-    margin:10px 0;
-    padding:5px;
-    border-radius:5px;
+display:block;
+padding:10px;
+text-decoration:none;
+border-radius:5px;
 }
 
 .sidebar a:hover{
-    background:rgba(255,255,255,0.2);
+background:#34495e;
 }
-
-/* Main Content */
 
 .main-content{
-    flex:1;
-    padding:40px;
+margin-left:240px;
+padding:20px;
 }
+
+
 
 .welcome{
     margin-bottom:30px;

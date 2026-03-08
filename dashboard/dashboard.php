@@ -1,35 +1,101 @@
 <?php
 include '../auth/auth_check.php';
+include '../config/db_connect.php';
 include '../includes/header.php';
 ?>
 
 <?php include '../includes/sidebar.php'; ?>
 
-<div class="main-content">
+<div class="main-content container mt-4">
 
-<h1>Smart Personal Finance & Tax Management System</h1>
+<h2 class="mb-4">Smart Personal Finance & Tax Management System</h2>
 
-<p>Welcome <?php echo $_SESSION['user_name']; ?></p>
+<p class="mb-4">Welcome <b><?php echo $_SESSION['user_name']; ?></b></p>
 
-<div class="cards">
+<?php
 
-<div class="card">
-<h3>Accounts</h3>
+$totalBalance = $conn->query("SELECT SUM(balance) as total FROM accounts")->fetch_assoc()['total'] ?? 0;
+
+$totalIncome = $conn->query("SELECT SUM(amount) as total FROM transactions WHERE transaction_type='Income'")->fetch_assoc()['total'] ?? 0;
+
+$totalExpense = $conn->query("SELECT SUM(amount) as total FROM transactions WHERE transaction_type='Expense'")->fetch_assoc()['total'] ?? 0;
+
+?>
+
+<div class="row mb-4">
+
+<div class="col-md-4">
+<div class="card shadow p-3 text-center">
+<h5>Total Balance</h5>
+<h3>₹<?php echo number_format($totalBalance,2); ?></h3>
+</div>
+</div>
+
+<div class="col-md-4">
+<div class="card shadow p-3 text-center">
+<h5>Total Income</h5>
+<h3 class="text-success">₹<?php echo $totalIncome ?? 0; ?></h3>
+</div>
+</div>
+
+<div class="col-md-4">
+<div class="card shadow p-3 text-center">
+<h5>Total Expense</h5>
+<h3 class="text-danger">₹<?php echo $totalExpense ?? 0; ?></h3>
+</div>
+</div>
+
+</div>
+
+<div class="row">
+
+<div class="col-md-6">
+<div class="card shadow p-3">
+<h5>Finance Overview</h5>
+
+<canvas id="financeChart"></canvas>
+
+</div>
+</div>
+
+<div class="col-md-6">
+
+<div class="card shadow p-3 mb-3">
+<h5>Accounts</h5>
 <p>Manage your financial accounts</p>
 </div>
 
-<div class="card">
-<h3>Transactions</h3>
+<div class="card shadow p-3 mb-3">
+<h5>Transactions</h5>
 <p>Track your income and expenses</p>
 </div>
 
-<div class="card">
-<h3>Reports</h3>
+<div class="card shadow p-3">
+<h5>Reports</h5>
 <p>View monthly financial reports</p>
 </div>
 
 </div>
 
 </div>
+
+</div>
+
+<script>
+
+const ctx = document.getElementById('financeChart');
+
+new Chart(ctx, {
+type: 'pie',
+data: {
+labels: ['Income', 'Expense'],
+datasets: [{
+data: [<?php echo $totalIncome ?? 0 ?>, <?php echo $totalExpense ?? 0 ?>],
+backgroundColor: ['#28a745','#dc3545']
+}]
+}
+});
+
+</script>
 
 <?php include '../includes/footer.php'; ?>
