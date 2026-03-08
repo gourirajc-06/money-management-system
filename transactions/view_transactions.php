@@ -30,7 +30,7 @@ include '../includes/header.php';
 
 </form>
 
-<br>
+
 
 <?php
 
@@ -48,7 +48,11 @@ $sql .= " WHERE t.transaction_type='$type'";
 $sql .= " ORDER BY t.transaction_date DESC";
 
 $result = $conn->query($sql);
+?>
 
+<div class="cards">
+
+<?php
 while($row = $result->fetch_assoc()){
 ?>
 
@@ -62,8 +66,6 @@ while($row = $result->fetch_assoc()){
 <strong>Date:</strong> <?php echo $row['transaction_date']; ?>
 
 </div>
-
-<br>
 
 <?php } ?>
 

@@ -15,6 +15,7 @@ include '../includes/header.php';
 $sql = "
 SELECT 
 t.transaction_id,
+t.transaction_date,
 t.transaction_type,
 t.amount,
 c.category_name,
@@ -79,6 +80,7 @@ $effective_tax_rate = ($total_tax / $total_income) * 100;
 <table class="tax-table">
 
 <tr>
+<th>Date</th>
 <th>Category</th>
 <th>Type</th>
 <th>Amount</th>
@@ -92,6 +94,7 @@ foreach($rows as $row){
 ?>
 
 <tr>
+<td><?php echo $row['transaction_date']; ?></td>
 <td><?php echo $row['category_name']; ?></td>
 <td><?php echo $row['transaction_type']; ?></td>
 <td>₹<?php echo number_format($row['amount'],2); ?></td>

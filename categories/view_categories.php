@@ -16,7 +16,11 @@ include '../includes/header.php';
 
 <?php
 $result = $conn->query("SELECT * FROM categories");
+?>
 
+<div class="cards">
+
+<?php
 while($row = $result->fetch_assoc()){
 ?>
 
@@ -27,9 +31,9 @@ while($row = $result->fetch_assoc()){
 
 </div>
 
-<br>
-
 <?php } ?>
+
+</div>
 
 </div>
 
