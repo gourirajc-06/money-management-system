@@ -10,7 +10,7 @@ include '../includes/header.php';
 
 <h1>Categories</h1>
 
-<a href="add_category.php">Add Category</a>
+<a href="add_category.php" class="btn">Add Category</a>
 
 <br><br>
 

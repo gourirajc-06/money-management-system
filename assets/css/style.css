@@ -100,7 +100,9 @@ background:#34495e;
 
 .main-content{
 margin-left:240px;
-padding:20px;
+padding:40px;
+min-height:100vh;
+width:calc(100% - 240px);
 }
 
 
@@ -116,6 +118,7 @@ padding:20px;
     display:flex;
     gap:20px;
     flex-wrap:wrap;
+    align-items:flex-start;
 }
 
 .card{
@@ -123,5 +126,46 @@ padding:20px;
     padding:20px;
     border-radius:10px;
     box-shadow:0px 5px 15px rgba(0,0,0,0.1);
-    width:220px;
+    width:260px;
+}
+
+.btn{
+background:#2f80ed;
+color:white;
+padding:10px 15px;
+border-radius:6px;
+display:inline-block;
+margin-bottom:20px;
+}
+
+.btn:hover{
+background:#1f5fbf;
+}
+
+/* Tax Table */
+
+.tax-table{
+width:80%;
+border-collapse:collapse;
+background:white;
+border-radius:10px;
+overflow:hidden;
+box-shadow:0px 4px 10px rgba(0,0,0,0.15);
+margin-top:30px;
+}
+
+.tax-table th{
+background:#2f80ed;
+color:white;
+padding:12px;
+text-align:left;
+}
+
+.tax-table td{
+padding:12px;
+border-bottom:1px solid #eee;
+}
+
+.tax-table tr:hover{
+background:#f5f7fa;
 }

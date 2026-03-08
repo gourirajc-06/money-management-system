@@ -11,6 +11,7 @@
 <a class="nav-link text-white mb-2" href="../transactions/view_transactions.php">💳 Transactions</a>
 
 <a class="nav-link text-white mb-2" href="../reports/monthly_report.php">📑 Reports</a>
+<a class="nav-link text-white mb-2" href="../tax/tax_report.php">🧾 Tax Calculator</a>
 
 <hr>
 

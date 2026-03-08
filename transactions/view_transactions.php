@@ -10,7 +10,7 @@ include '../includes/header.php';
 
 <h1>Transactions</h1>
 
-<a href="add_transaction.php">Add Transaction</a>
+<a href="add_transaction.php" class="btn">Add Transaction</a>
 
 <br><br>
 
