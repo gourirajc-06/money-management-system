@@ -19,8 +19,8 @@ t.transaction_date,
 t.transaction_type,
 t.amount,
 c.category_name,
-tx.tax_percent,
-(t.amount * tx.tax_percent / 100) AS tax_amount
+IFNULL(tx.tax_percent,0) AS tax_percent,
+(t.amount * IFNULL(tx.tax_percent,0) / 100) AS tax_amount
 FROM transactions t
 JOIN categories c ON t.category_id = c.category_id
 LEFT JOIN taxes tx ON c.category_id = tx.category_id

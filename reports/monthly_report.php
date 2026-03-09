@@ -13,7 +13,9 @@ include '../includes/header.php';
 <?php
 $sql = "SELECT MONTH(transaction_date) as month, SUM(amount) as total
         FROM transactions
-        GROUP BY MONTH(transaction_date)";
+        WHERE transaction_type='Expense'
+        GROUP BY MONTH(transaction_date)
+        ORDER BY MONTH(transaction_date)";
 
 $result = $conn->query($sql);
 
@@ -43,7 +45,7 @@ $totals[] = $row['total'];
 
 <tr>
 <td><?php echo $monthName; ?></td>
-<td>₹<?php echo $row['total']; ?></td>
+<td>₹<?php echo number_format($row['total'],2); ?></td>
 </tr>
 
 <?php } ?>
@@ -53,9 +55,14 @@ $totals[] = $row['total'];
 
 <br>
 
-<div class="card p-3 shadow">
-<h5>Monthly Expense Chart</h5>
+<div class="card shadow p-4 mx-auto" style="width:90%;">
+
+<h5 class="mb-3">Monthly Expense Chart</h5>
+
+<div style="height:450px; width:100%;">
 <canvas id="monthlyChart"></canvas>
+</div>
+
 </div>
 
 </div>
@@ -63,10 +70,13 @@ $totals[] = $row['total'];
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <script>
+
 const ctx = document.getElementById('monthlyChart');
 
 new Chart(ctx, {
+
 type: 'bar',
+
 data: {
 labels: <?php echo json_encode($months); ?>,
 datasets: [{
@@ -74,8 +84,29 @@ label: 'Monthly Amount',
 data: <?php echo json_encode($totals); ?>,
 backgroundColor: '#007bff'
 }]
+},
+
+options: {
+
+responsive: true,
+maintainAspectRatio: false,
+
+plugins:{
+legend:{
+display:true
 }
+},
+
+scales:{
+y:{
+beginAtZero:true
+}
+}
+
+}
+
 });
+
 </script>
 
 <?php include '../includes/footer.php'; ?>

@@ -20,7 +20,12 @@ $totalIncome = $conn->query("SELECT SUM(amount) as total FROM transactions WHERE
 
 $totalExpense = $conn->query("SELECT SUM(amount) as total FROM transactions WHERE transaction_type='Expense'")->fetch_assoc()['total'] ?? 0;
 
+// Get individual accounts
+$accounts = $conn->query("SELECT account_name, balance FROM accounts");
+
 ?>
+
+<!-- Summary Cards -->
 
 <div class="row mb-4">
 
@@ -34,18 +39,46 @@ $totalExpense = $conn->query("SELECT SUM(amount) as total FROM transactions WHER
 <div class="col-md-4">
 <div class="card shadow p-3 text-center">
 <h5>Total Income</h5>
-<h3 class="text-success">₹<?php echo $totalIncome ?? 0; ?></h3>
+<h3 class="text-success">₹<?php echo number_format($totalIncome,2); ?></h3>
 </div>
 </div>
 
 <div class="col-md-4">
 <div class="card shadow p-3 text-center">
 <h5>Total Expense</h5>
-<h3 class="text-danger">₹<?php echo $totalExpense ?? 0; ?></h3>
+<h3 class="text-danger">₹<?php echo number_format($totalExpense,2); ?></h3>
 </div>
 </div>
 
 </div>
+
+<!-- Account Balances -->
+
+<h5 class="mb-3">Account Balances</h5>
+
+<div class="row mb-4">
+
+<?php
+while($row = $accounts->fetch_assoc()){
+?>
+
+<div class="col-md-4">
+
+<div class="card shadow p-3 text-center mb-3">
+
+<h6><?php echo $row['account_name']; ?></h6>
+
+<h5>₹<?php echo number_format($row['balance'],2); ?></h5>
+
+</div>
+
+</div>
+
+<?php } ?>
+
+</div>
+
+<!-- Finance Overview -->
 
 <div class="row">
 
