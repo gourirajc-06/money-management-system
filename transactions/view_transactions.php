@@ -2,6 +2,9 @@
 include '../auth/auth_check.php';
 include '../config/db_connect.php';
 include '../includes/header.php';
+
+// ✅ Get logged-in user
+$user_id = $_SESSION['user_id'];
 ?>
 
 <?php include '../includes/sidebar.php'; ?>
@@ -15,7 +18,6 @@ include '../includes/header.php';
 <br><br>
 
 <!-- Filter Form -->
-
 <form method="GET">
 
 <select name="type">
@@ -30,19 +32,20 @@ include '../includes/header.php';
 
 </form>
 
-
-
 <?php
 
 $type = $_GET['type'] ?? '';
 
+// ✅ ALWAYS start with user filter
 $sql = "SELECT t.*, a.account_name, c.category_name
         FROM transactions t
         JOIN accounts a ON t.account_id = a.account_id
-        JOIN categories c ON t.category_id = c.category_id";
+        JOIN categories c ON t.category_id = c.category_id
+        WHERE t.user_id = $user_id";
 
+// ✅ Add filter if selected
 if($type != ''){
-$sql .= " WHERE t.transaction_type='$type'";
+    $sql .= " AND t.transaction_type = '$type'";
 }
 
 $sql .= " ORDER BY t.transaction_date DESC";
@@ -53,6 +56,7 @@ $result = $conn->query($sql);
 <div class="cards">
 
 <?php
+if($result && $result->num_rows > 0){
 while($row = $result->fetch_assoc()){
 ?>
 
@@ -67,7 +71,12 @@ while($row = $result->fetch_assoc()){
 
 </div>
 
-<?php } ?>
+<?php 
+}
+}else{
+    echo "<p>No transactions found.</p>";
+}
+?>
 
 </div>
 

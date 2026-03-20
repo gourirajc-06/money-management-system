@@ -2,6 +2,9 @@
 include '../auth/auth_check.php';
 include '../config/db_connect.php';
 include '../includes/header.php';
+
+// ✅ Get logged-in user
+$user_id = $_SESSION['user_id'];
 ?>
 
 <?php include '../includes/sidebar.php'; ?>
@@ -11,9 +14,11 @@ include '../includes/header.php';
 <h2 class="mb-4">Monthly Financial Report</h2>
 
 <?php
+// ✅ Filter by user_id
 $sql = "SELECT MONTH(transaction_date) as month, SUM(amount) as total
         FROM transactions
         WHERE transaction_type='Expense'
+        AND user_id = $user_id
         GROUP BY MONTH(transaction_date)
         ORDER BY MONTH(transaction_date)";
 
@@ -35,6 +40,7 @@ $totals = [];
 <tbody>
 
 <?php
+if($result && $result->num_rows > 0){
 while($row = $result->fetch_assoc()){
 
 $monthName = date("F", mktime(0,0,0,$row['month'],10));
@@ -48,7 +54,12 @@ $totals[] = $row['total'];
 <td>₹<?php echo number_format($row['total'],2); ?></td>
 </tr>
 
-<?php } ?>
+<?php 
+}
+}else{
+echo "<tr><td colspan='2'>No data available</td></tr>";
+}
+?>
 
 </tbody>
 </table>
@@ -80,7 +91,7 @@ type: 'bar',
 data: {
 labels: <?php echo json_encode($months); ?>,
 datasets: [{
-label: 'Monthly Amount',
+label: 'Monthly Expense',
 data: <?php echo json_encode($totals); ?>,
 backgroundColor: '#007bff'
 }]

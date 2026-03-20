@@ -2,6 +2,9 @@
 include '../auth/auth_check.php';
 include '../config/db_connect.php';
 include '../includes/header.php';
+
+// ✅ Get logged-in user id
+$user_id = $_SESSION['user_id'];
 ?>
 
 <?php include '../includes/sidebar.php'; ?>
@@ -15,7 +18,8 @@ include '../includes/header.php';
 <div class="row">
 
 <?php
-$result = $conn->query("SELECT * FROM accounts");
+// ✅ Fetch only this user's accounts
+$result = $conn->query("SELECT * FROM accounts WHERE user_id = $user_id");
 
 if($result && $result->num_rows > 0){
 
@@ -28,7 +32,7 @@ while($row = $result->fetch_assoc()){
 
 <div class="card-body">
 
-<h5 class="card-title"> <?php echo $row['account_name']; ?></h5>
+<h5 class="card-title"><?php echo $row['account_name']; ?></h5>
 
 <p class="card-text">
 <strong>ID:</strong> <?php echo $row['account_id']; ?><br>

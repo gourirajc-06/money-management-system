@@ -2,6 +2,9 @@
 include '../auth/auth_check.php';
 include '../config/db_connect.php';
 include '../includes/header.php';
+
+// Get logged-in user id
+$user_id = $_SESSION['user_id'];
 ?>
 
 <?php include '../includes/sidebar.php'; ?>
@@ -14,14 +17,35 @@ include '../includes/header.php';
 
 <?php
 
-$totalBalance = $conn->query("SELECT SUM(balance) as total FROM accounts")->fetch_assoc()['total'] ?? 0;
+// Total Balance (ONLY this user)
+$totalBalance = $conn->query("
+    SELECT SUM(balance) as total 
+    FROM accounts 
+    WHERE user_id = $user_id
+")->fetch_assoc()['total'] ?? 0;
 
-$totalIncome = $conn->query("SELECT SUM(amount) as total FROM transactions WHERE transaction_type='Income'")->fetch_assoc()['total'] ?? 0;
+// Total Income (ONLY this user)
+$totalIncome = $conn->query("
+    SELECT SUM(amount) as total 
+    FROM transactions 
+    WHERE transaction_type='Income' 
+    AND user_id = $user_id
+")->fetch_assoc()['total'] ?? 0;
 
-$totalExpense = $conn->query("SELECT SUM(amount) as total FROM transactions WHERE transaction_type='Expense'")->fetch_assoc()['total'] ?? 0;
+// Total Expense (ONLY this user)
+$totalExpense = $conn->query("
+    SELECT SUM(amount) as total 
+    FROM transactions 
+    WHERE transaction_type='Expense' 
+    AND user_id = $user_id
+")->fetch_assoc()['total'] ?? 0;
 
-// Get individual accounts
-$accounts = $conn->query("SELECT account_name, balance FROM accounts");
+// Get ONLY this user's accounts
+$accounts = $conn->query("
+    SELECT account_name, balance 
+    FROM accounts 
+    WHERE user_id = $user_id
+");
 
 ?>
 

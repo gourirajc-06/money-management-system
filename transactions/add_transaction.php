@@ -1,12 +1,25 @@
 <?php
+session_start();
 include '../config/db_connect.php';
+
+// 🔐 Check login
+if(!isset($_SESSION['user_id'])){
+    header("Location: ../auth/login.php");
+    exit();
+}
+
+$user_id = $_SESSION['user_id'];
 
 $message = "";
 
-// fetch accounts
-$accounts = $conn->query("SELECT account_id, account_name FROM accounts");
+// ✅ Fetch ONLY this user's accounts
+$accounts = $conn->query("
+    SELECT account_id, account_name 
+    FROM accounts 
+    WHERE user_id = $user_id
+");
 
-// fetch categories
+// categories can be common (no change needed)
 $categories = $conn->query("SELECT category_id, category_name FROM categories");
 
 if(isset($_POST['submit'])){
@@ -16,21 +29,45 @@ if(isset($_POST['submit'])){
     $type = $_POST['transaction_type'];
     $date = $_POST['date'];
 
-    $sql = "INSERT INTO transactions 
-            (account_id, category_id, amount, transaction_type, transaction_date)
-            VALUES ('$account_id','$category_id','$amount','$type','$date')";
+    // ✅ Ensure selected account belongs to user
+    $checkAccount = $conn->query("
+        SELECT * FROM accounts 
+        WHERE account_id = $account_id 
+        AND user_id = $user_id
+    ");
 
-    if($conn->query($sql)){
-
-        if($type == "Income"){
-            $conn->query("UPDATE accounts SET balance = balance + $amount WHERE account_id = $account_id");
-        } else {
-            $conn->query("UPDATE accounts SET balance = balance - $amount WHERE account_id = $account_id");
-        }
-
-        $message = "Transaction Added Successfully!";
+    if($checkAccount->num_rows == 0){
+        $message = "Invalid account selection!";
     } else {
-        $message = "Error: " . $conn->error;
+
+        // ✅ Insert transaction WITH user_id
+        $sql = "INSERT INTO transactions 
+                (user_id, account_id, category_id, amount, transaction_type, transaction_date)
+                VALUES ('$user_id','$account_id','$category_id','$amount','$type','$date')";
+
+        if($conn->query($sql)){
+
+            // ✅ Update balance ONLY for this user's account
+            if($type == "Income"){
+                $conn->query("
+                    UPDATE accounts 
+                    SET balance = balance + $amount 
+                    WHERE account_id = $account_id 
+                    AND user_id = $user_id
+                ");
+            } else {
+                $conn->query("
+                    UPDATE accounts 
+                    SET balance = balance - $amount 
+                    WHERE account_id = $account_id 
+                    AND user_id = $user_id
+                ");
+            }
+
+            $message = "Transaction Added Successfully!";
+        } else {
+            $message = "Error: " . $conn->error;
+        }
     }
 }
 ?>
@@ -46,7 +83,7 @@ if(isset($_POST['submit'])){
 
 <div class="container">
 
-<a href="../index.php">← Dashboard</a>
+<a href="../dashboard/dashboard.php">← Dashboard</a>
 
 <h2>Add Transaction</h2>
 
