@@ -17,11 +17,12 @@ $user_id = $_SESSION['user_id'];
 
 <?php
 
-// Total Balance (ONLY this user)
+// Total Balance (ONLY this user's ACTIVE accounts)
 $totalBalance = $conn->query("
     SELECT SUM(balance) as total 
     FROM accounts 
     WHERE user_id = $user_id
+    AND is_active = 1
 ")->fetch_assoc()['total'] ?? 0;
 
 // Total Income (ONLY this user)
@@ -40,11 +41,12 @@ $totalExpense = $conn->query("
     AND user_id = $user_id
 ")->fetch_assoc()['total'] ?? 0;
 
-// Get ONLY this user's accounts
+// Get ONLY this user's ACTIVE accounts
 $accounts = $conn->query("
     SELECT account_name, balance 
     FROM accounts 
     WHERE user_id = $user_id
+    AND is_active = 1
 ");
 
 ?>

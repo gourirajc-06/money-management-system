@@ -3,7 +3,7 @@ include '../auth/auth_check.php';
 include '../config/db_connect.php';
 include '../includes/header.php';
 
-// ✅ Get logged-in user id
+// Get logged-in user id
 $user_id = $_SESSION['user_id'];
 ?>
 
@@ -11,54 +11,60 @@ $user_id = $_SESSION['user_id'];
 
 <div class="main-content container mt-4">
 
-<h2 class="mb-4">Accounts</h2>
+    <h2 class="mb-4">Accounts</h2>
 
-<a href="add_account.php" class="btn btn-primary mb-3">+ Add Account</a>
+    <a href="add_account.php" class="btn btn-primary mb-3">+ Add Account</a>
 
-<div class="row">
+    <div class="row">
 
-<?php
-// ✅ Fetch only this user's accounts
-$result = $conn->query("SELECT * FROM accounts WHERE user_id = $user_id");
+    <?php
+    // Fetch only this user's accounts
+    $result = $conn->query("SELECT * FROM accounts WHERE user_id = $user_id");
 
-if($result && $result->num_rows > 0){
+    if ($result && $result->num_rows > 0) {
 
-while($row = $result->fetch_assoc()){
-?>
+        while ($row = $result->fetch_assoc()) {
+    ?>
 
-<div class="col-md-4">
+        <div class="col-md-4">
+            <div class="card shadow mb-4">
+                <div class="card-body">
 
-<div class="card shadow mb-4">
+                    <h5 class="card-title"><?php echo $row['account_name']; ?></h5>
 
-<div class="card-body">
+                    <p class="card-text">
+                        <strong>ID:</strong> <?php echo $row['account_id']; ?><br>
+                        <strong>Balance:</strong> ₹<?php echo number_format($row['balance'], 2); ?><br>
+                        <strong>Status:</strong>
+                        <?php echo ($row['is_active'] == 1) ? 'Active' : 'Inactive'; ?>
+                    </p>
 
-<h5 class="card-title"><?php echo $row['account_name']; ?></h5>
+                    <?php if ($row['is_active'] == 1) { ?>
+                        <a href="edit_account.php?id=<?php echo $row['account_id']; ?>" class="btn btn-warning btn-sm">Edit</a>
 
-<p class="card-text">
-<strong>ID:</strong> <?php echo $row['account_id']; ?><br>
-<strong>Balance:</strong> ₹<?php echo number_format($row['balance'],2); ?>
-</p>
+                        <a href="delete_account.php?id=<?php echo $row['account_id']; ?>"
+                           class="btn btn-danger btn-sm"
+                           onclick="return confirm('Are you sure you want to deactivate this account?');">
+                           Deactivate
+                        </a>
+                    <?php } else { ?>
+                        <button class="btn btn-secondary btn-sm" disabled>Inactive</button>
+                    <?php } ?>
 
-<a href="edit_account.php?id=<?php echo $row['account_id']; ?>" class="btn btn-warning btn-sm">Edit</a>
+                </div>
+            </div>
+        </div>
 
-<a href="delete_account.php?id=<?php echo $row['account_id']; ?>" class="btn btn-danger btn-sm">Delete</a>
+    <?php
+        }
+    } else {
+    ?>
 
-</div>
+        <p>No accounts found.</p>
 
-</div>
+    <?php } ?>
 
-</div>
-
-<?php 
-}
-}else{
-?>
-
-<p>No accounts found.</p>
-
-<?php } ?>
-
-</div>
+    </div>
 
 </div>
 

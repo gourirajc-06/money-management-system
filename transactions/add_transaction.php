@@ -2,7 +2,7 @@
 session_start();
 include '../config/db_connect.php';
 
-// 🔐 Check login
+// Check login
 if(!isset($_SESSION['user_id'])){
     header("Location: ../auth/login.php");
     exit();
@@ -12,14 +12,15 @@ $user_id = $_SESSION['user_id'];
 
 $message = "";
 
-// ✅ Fetch ONLY this user's accounts
+// Fetch ONLY this user's active accounts
 $accounts = $conn->query("
     SELECT account_id, account_name 
     FROM accounts 
     WHERE user_id = $user_id
+    AND is_active = 1
 ");
 
-// categories can be common (no change needed)
+// categories can be common
 $categories = $conn->query("SELECT category_id, category_name FROM categories");
 
 if(isset($_POST['submit'])){
@@ -29,31 +30,33 @@ if(isset($_POST['submit'])){
     $type = $_POST['transaction_type'];
     $date = $_POST['date'];
 
-    // ✅ Ensure selected account belongs to user
+    // Ensure selected account belongs to user and is active
     $checkAccount = $conn->query("
         SELECT * FROM accounts 
         WHERE account_id = $account_id 
         AND user_id = $user_id
+        AND is_active = 1
     ");
 
     if($checkAccount->num_rows == 0){
-        $message = "Invalid account selection!";
+        $message = "Invalid or inactive account selection!";
     } else {
 
-        // ✅ Insert transaction WITH user_id
+        // Insert transaction with user_id
         $sql = "INSERT INTO transactions 
                 (user_id, account_id, category_id, amount, transaction_type, transaction_date)
                 VALUES ('$user_id','$account_id','$category_id','$amount','$type','$date')";
 
         if($conn->query($sql)){
 
-            // ✅ Update balance ONLY for this user's account
+            // Update balance only for this user's active account
             if($type == "Income"){
                 $conn->query("
                     UPDATE accounts 
                     SET balance = balance + $amount 
                     WHERE account_id = $account_id 
                     AND user_id = $user_id
+                    AND is_active = 1
                 ");
             } else {
                 $conn->query("
@@ -61,6 +64,7 @@ if(isset($_POST['submit'])){
                     SET balance = balance - $amount 
                     WHERE account_id = $account_id 
                     AND user_id = $user_id
+                    AND is_active = 1
                 ");
             }
 
@@ -98,7 +102,7 @@ Account:
 
 <?php
 while($row = $accounts->fetch_assoc()){
-echo "<option value='".$row['account_id']."'>".$row['account_name']."</option>";
+    echo "<option value='".$row['account_id']."'>".$row['account_name']."</option>";
 }
 ?>
 
@@ -113,7 +117,7 @@ Category:
 
 <?php
 while($row = $categories->fetch_assoc()){
-echo "<option value='".$row['category_id']."'>".$row['category_name']."</option>";
+    echo "<option value='".$row['category_id']."'>".$row['category_name']."</option>";
 }
 ?>
 
